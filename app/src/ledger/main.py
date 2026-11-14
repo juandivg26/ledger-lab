@@ -27,9 +27,12 @@ class Credentials(BaseModel):
     password: str = Field(min_length=10, max_length=128)
 
 
+MAX_TRANSFER_CENTS = 200_000  # Limite por transferencia: 2.000,00.
+
+
 class TransferRequest(BaseModel):
     to_email: EmailStr
-    amount_cents: int = Field(gt=0, le=100_000_000)
+    amount_cents: int = Field(gt=0, le=MAX_TRANSFER_CENTS)
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:

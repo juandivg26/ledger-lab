@@ -118,3 +118,10 @@ def test_concurrent_retries_of_same_key_charge_once(client, signup):
 def test_health_endpoints(client):
     assert client.get("/healthz").json()["status"] == "ok"
     assert client.get("/readyz").json()["status"] == "ready"
+
+
+def test_transfer_above_limit_is_rejected(client, signup):
+    ana = signup("ana@example.com")
+    signup("luis@example.com")
+    assert send(client, ana, "luis@example.com", 200_001, "clave-limite-1").status_code == 422
+    assert send(client, ana, "luis@example.com", 100_000, "clave-limite-2").status_code == 201
