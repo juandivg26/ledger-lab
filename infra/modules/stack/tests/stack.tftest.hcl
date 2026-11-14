@@ -105,6 +105,21 @@ run "prod_se_protege" {
   }
 }
 
+run "el_modo_express_solo_se_pide_explicitamente" {
+  command = apply
+
+  variables {
+    environment         = "prod"
+    max_replicas        = 3
+    express_environment = true
+  }
+
+  assert {
+    condition     = module.app.environment_mode == "Express"
+    error_message = "express_environment debe crear el ambiente en modo Express."
+  }
+}
+
 run "la_base_puede_ir_en_otra_region" {
   command = apply
 

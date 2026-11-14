@@ -73,3 +73,16 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "express" {
+  description = "Crea el ambiente en modo Express. Azure for Students solo admite un ambiente normal por suscripcion; Express no admite secretos desde Key Vault."
+  type        = bool
+  default     = false
+}
+
+variable "secret_values" {
+  description = "Valores de los secretos; solo se usan en modo Express, que no puede referenciar Key Vault."
+  type        = map(string)
+  default     = {}
+  sensitive   = true
+}

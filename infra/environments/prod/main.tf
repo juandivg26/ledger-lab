@@ -59,6 +59,8 @@ module "stack" {
   use_free_offer    = var.use_free_offer
   max_replicas      = 3
   jwt_minutes       = 15
+  # Azure for Students admite un solo ambiente normal por suscripcion y dev ya lo usa.
+  express_environment = true
 }
 
 output "app_url" {

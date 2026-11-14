@@ -57,3 +57,9 @@ variable "rbac_propagation_wait" {
   type        = string
   default     = "90s"
 }
+
+variable "express_environment" {
+  description = "Ambiente de Container Apps en modo Express (los secretos van como valor y no desde Key Vault)."
+  type        = bool
+  default     = false
+}
