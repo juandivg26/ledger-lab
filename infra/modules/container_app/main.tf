@@ -40,8 +40,8 @@ resource "azapi_resource" "environment" {
 
   body = {
     properties = {
-      environmentMode = "WorkloadProfiles"
-      workloadProfiles = [{
+      environmentMode = var.express ? "Express" : "WorkloadProfiles"
+      workloadProfiles = var.express ? null : [{
         name                = "Consumption"
         workloadProfileType = "Consumption"
       }]
@@ -91,7 +91,7 @@ resource "azurerm_container_app" "this" {
   resource_group_name          = var.resource_group_name
   container_app_environment_id = azapi_resource.environment.id
   revision_mode                = "Single"
-  workload_profile_name        = "Consumption"
+  workload_profile_name        = var.express ? null : "Consumption"
   tags                         = var.tags
   depends_on                   = [time_sleep.rbac_propagation]
 
@@ -104,8 +104,9 @@ resource "azurerm_container_app" "this" {
     for_each = var.secret_ids
     content {
       name                = secret.key
-      key_vault_secret_id = secret.value
-      identity            = azurerm_user_assigned_identity.app.id
+      key_vault_secret_id = var.express ? null : secret.value
+      identity            = var.express ? null : azurerm_user_assigned_identity.app.id
+      value               = var.express ? var.secret_values[secret.key] : null
     }
   }
 

@@ -78,14 +78,19 @@ module "key_vault" {
 module "app" {
   source = "../container_app"
 
-  name                  = local.name
-  resource_group_id     = azurerm_resource_group.this.id
-  resource_group_name   = azurerm_resource_group.this.name
-  location              = azurerm_resource_group.this.location
-  image                 = var.image
-  key_vault_id          = module.key_vault.id
-  secret_ids            = module.key_vault.secret_ids
-  max_replicas          = var.max_replicas
+  name                = local.name
+  resource_group_id   = azurerm_resource_group.this.id
+  resource_group_name = azurerm_resource_group.this.name
+  location            = azurerm_resource_group.this.location
+  image               = var.image
+  key_vault_id        = module.key_vault.id
+  secret_ids          = module.key_vault.secret_ids
+  express             = var.express_environment
+  max_replicas        = var.max_replicas
+  secret_values = {
+    "database-url" = module.database.database_url
+    "jwt-secret"   = random_password.jwt.result
+  }
   logs_enabled          = local.is_prod
   rbac_propagation_wait = var.rbac_propagation_wait
   tags                  = local.tags
