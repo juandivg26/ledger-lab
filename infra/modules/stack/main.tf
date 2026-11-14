@@ -79,6 +79,7 @@ module "app" {
   source = "../container_app"
 
   name                  = local.name
+  resource_group_id     = azurerm_resource_group.this.id
   resource_group_name   = azurerm_resource_group.this.name
   location              = azurerm_resource_group.this.location
   image                 = var.image

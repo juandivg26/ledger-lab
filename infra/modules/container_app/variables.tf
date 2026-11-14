@@ -3,6 +3,11 @@ variable "name" {
   type        = string
 }
 
+variable "resource_group_id" {
+  description = "ID del grupo de recursos (padre del ambiente, que se crea con azapi)."
+  type        = string
+}
+
 variable "resource_group_name" {
   description = "Grupo de recursos."
   type        = string
